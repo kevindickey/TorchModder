@@ -33,14 +33,11 @@ namespace TorchModder.Reader
             //  {
             foreach (string file in System.IO.Directory.EnumerateFiles(directory, fileSearchPattern, searchOption))
             {
-                this.TorchFiles.Add(new TorchFile(file));
-
+                if (this.TorchFiles.Find(f => f.FilePath == file) == null)
+                {
+                    this.TorchFiles.Add(new TorchFile(file)); 
+                }
             }
-            //  if(this.TorchFiles.Find(f => f.FilePath == file) == null)
-            //  {
-            //  this.TorchFiles.Add( new TorchFile(file));
-            //   }
-            //   });
         }
 
         /// <summary>
