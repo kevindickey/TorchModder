@@ -55,35 +55,21 @@ namespace TorchReaderUnitTester
         public void ReadDirectoriesWithController()
         {
             var controller = new TorchFileListController();
-
+            controller.AddSearchDirectory(@"C:\Program Files (x86)\Steam\steamapps\common\Torchlight II\MEDIA");
             controller.ReadAllDirectories("*.DAT");
-            controller.ReadAllDirectories("*MISSLE*.LAYOUT");
-            var files = controller.TorchFiles;
+            controller.ReadAllDirectories("*.LAYOUT");
+            Console.WriteLine("Files read: " + controller.TorchFiles.Count);
+
         }
 
         [TestMethod]
-        public void ModifyFile()
+        public void ReadDirectoriesWithControllerParallel()
         {
             var controller = new TorchFileListController();
             controller.AddSearchDirectory(@"C:\Program Files (x86)\Steam\steamapps\common\Torchlight II\MEDIA");
-            controller.ReadAllDirectories("ALRICEMBERBALL.LAYOUT");
-
-            var file = controller.FindTorchFile("ALRICEMBERBALL");
-
-            var version = file.Root.FindProperty("VERSION");
-            var element = file.Root.FindChild("OBJECTS").FindChild("BASEOBJECT").FindChild("PROPERTIES");
-
-            Console.WriteLine(version.ToString());
-            Console.WriteLine(element.serialize());
-
-            element.FindProperty("DESCRIPTOR").ModifyValue("TABLE");
-            element.FindProperty("RADIUS").ModifyValue("0.5");
-
-            Console.WriteLine(element.serialize());
-
-
+            controller.ReadAllDirectoriesParallel("*.DAT");
+            controller.ReadAllDirectoriesParallel("*.LAYOUT");
+            Console.WriteLine("Files read: " + controller.TorchFiles.Count);
         }
-
-
     }
 }
